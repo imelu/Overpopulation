@@ -24,8 +24,6 @@ public class YearManager : MonoBehaviour
             Instance = this;
         else if (Instance != this)
             Destroy(this.gameObject);
-
-        DontDestroyOnLoad(gameObject);
     }
     #endregion
 
@@ -51,7 +49,5 @@ public class YearManager : MonoBehaviour
     {
         currentYear = (int)YearSlider.value;
         CurrentYearDisplay.text = currentYear.ToString();
-        /*
-        */
     }
 }

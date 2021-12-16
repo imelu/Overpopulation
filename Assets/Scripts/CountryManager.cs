@@ -30,76 +30,37 @@ public class CountryManager : MonoBehaviour
 
     public bool processing = false;
 
+    private MouseManager mouseManager;
+
     // Start is called before the first frame update
     void Start()
     {
         countryName = gameObject.name;
-        CountryDict = CsvImport.Instance.FetchCountryDict(countryName);
-        colStage1 = CsvImport.Instance.colStage1;
-        colStage2 = CsvImport.Instance.colStage2;
-        colStage3 = CsvImport.Instance.colStage3;
-        colStage4 = CsvImport.Instance.colStage4;
+        CountryDict = DataManager.Instance.FetchCountryDict(countryName);
+        colStage1 = DataManager.Instance.colStage1;
+        colStage2 = DataManager.Instance.colStage2;
+        colStage3 = DataManager.Instance.colStage3;
+        colStage4 = DataManager.Instance.colStage4;
         image = GetComponent<SpriteRenderer>();
         image.color = colStage1;
+        mouseManager = GetComponent<MouseManager>();
         //Debug.Log(countryName);
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (Input.GetKeyDown(KeyCode.Space)) // call this when the current year changes
-        {
-            CountryData temp;
-            currentYear = YearManager.Instance.currentYear;
-            if(CountryDict == null)
-            {
-                CountryDict = CsvImport.Instance.FetchCountryDict(countryName);
-            }
-            if(CountryDict.TryGetValue(currentYear, out temp))
-            {
-                switch (currentStage)
-                {
-                    case 1:
-                        if(temp.mortality < mortalityThreshhold1)
-                        {
-                            currentStage = 2;
-                        }
-                        break;
 
-                    case 2:
-                        if(temp.mortality < mortalityThreshhold2 && temp.fertility < fertilityThreshhold1)
-                        {
-                            currentStage = 3;
-                        }
-                        break;
-
-                    case 3:
-                        if(temp.fertility < fertilityThreshhold2)
-                        {
-                            currentStage = 4;
-                        }
-                        break;
-
-                    case 4:
-
-                        break;
-                }
-            }
-            else
-            {
-                Debug.Log("No data for year " + currentYear + " in the country " + countryName + " has been found");
-            }
-        }*/
     }
 
     public void updateYear()
     {
         CountryData temp;
+        currentYearOld = currentYear;
         currentYear = YearManager.Instance.currentYear;
         if (CountryDict == null)
         {
-            CountryDict = CsvImport.Instance.FetchCountryDict(countryName);
+            CountryDict = DataManager.Instance.FetchCountryDict(countryName);
         }
         else
         {
@@ -118,7 +79,7 @@ public class CountryManager : MonoBehaviour
             }
             for(int i = fromYear; i < toYear; i++)
             {
-                if (CountryDict.TryGetValue(currentYear, out temp))
+                if (CountryDict.TryGetValue(i, out temp))
                 {
                     if (temp.mortality != -1)
                     {
@@ -140,7 +101,7 @@ public class CountryManager : MonoBehaviour
                     {
                         currentCountryData.mortality = 1000000;
                         currentStage = 1;
-                        image.color = colStage1;
+                        ChangeColor(colStage1);
                     }
                     switch (currentStage)
                     {
@@ -148,7 +109,7 @@ public class CountryManager : MonoBehaviour
                             if (currentCountryData.mortality < mortalityThreshhold1)
                             {
                                 currentStage = 2;
-                                image.color = colStage2;
+                                ChangeColor(colStage2);
                                 updateYear();
                             }
                             break;
@@ -157,13 +118,13 @@ public class CountryManager : MonoBehaviour
                             if (currentCountryData.mortality > mortalityThreshhold1)
                             {
                                 currentStage = 1;
-                                image.color = colStage1;
+                                ChangeColor(colStage1);
                                 updateYear();
                             }
                             if (currentCountryData.mortality < mortalityThreshhold2 && currentCountryData.fertility < fertilityThreshhold1)
                             {
                                 currentStage = 3;
-                                image.color = colStage3;
+                                ChangeColor(colStage3);
                                 updateYear();
                             }
                             break;
@@ -172,13 +133,13 @@ public class CountryManager : MonoBehaviour
                             if (currentCountryData.mortality > mortalityThreshhold2 || currentCountryData.fertility > fertilityThreshhold1)
                             {
                                 currentStage = 2;
-                                image.color = colStage2;
+                                ChangeColor(colStage2);
                                 updateYear();
                             }
                             if (currentCountryData.fertility < fertilityThreshhold2)
                             {
                                 currentStage = 4;
-                                image.color = colStage4;
+                                ChangeColor(colStage4);
                                 updateYear();
                             }
                             break;
@@ -187,7 +148,7 @@ public class CountryManager : MonoBehaviour
                             if (currentCountryData.fertility > fertilityThreshhold2)
                             {
                                 currentStage = 3;
-                                image.color = colStage3;
+                                ChangeColor(colStage3);
                                 updateYear();
                             }
                             break;
@@ -199,7 +160,20 @@ public class CountryManager : MonoBehaviour
                 }
             }
         }
-        currentYearOld = currentYear;
+        
         processing = false;
+    }
+
+
+    private void ChangeColor(Color _color)
+    {
+        if (mouseManager.countryAdded)
+        {
+            mouseManager.savedColor = _color;
+        }
+        else
+        {
+            image.color = _color;
+        }
     }
 }
