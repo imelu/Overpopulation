@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class CountryManager : MonoBehaviour
 {
@@ -45,6 +43,7 @@ public class CountryManager : MonoBehaviour
         countryName = gameObject.name;
         CountryDict = DataManager.Instance.FetchCountryDict(countryName);
         yearData = DataManager.Instance.FetchCountryYearData(countryName);
+
         schraffur = DataManager.Instance.WorldMapSchraffiert;
         colStage1 = DataManager.Instance.colStage1;
         colStage2 = DataManager.Instance.colStage2;
@@ -54,6 +53,7 @@ public class CountryManager : MonoBehaviour
         image.color = colStage1;
         mouseManager = GetComponent<MouseManager>();
         //Debug.Log(countryName);
+
     }
 
     // Update is called once per frame
@@ -73,7 +73,7 @@ public class CountryManager : MonoBehaviour
         }
         else
         {
-            if(yearData == null)
+            if (yearData == null)
             {
                 yearData = DataManager.Instance.FetchCountryYearData(countryName);
             }
@@ -119,7 +119,7 @@ public class CountryManager : MonoBehaviour
                     currentCountryData.mortality = temp.mortality;
                     currentCountryData.population = temp.population;
 
-                    if(currentYear < 2015 && noData)
+                    if (currentYear < 2015 && noData)
                     {
                         currentStage = 1;
                         ChangeColor(colStage1);
@@ -186,9 +186,9 @@ public class CountryManager : MonoBehaviour
         }
         if (noData && !schraffurActive)
         {
-            foreach(Transform child in schraffur.transform)
+            foreach (Transform child in schraffur.transform)
             {
-                if(string.Equals(child.gameObject.name, gameObject.name))
+                if (string.Equals(child.gameObject.name, gameObject.name))
                 {
                     child.gameObject.SetActive(true);
                     schraffurActive = true;
@@ -196,7 +196,7 @@ public class CountryManager : MonoBehaviour
                 }
             }
         }
-        if(!noData && schraffurActive)
+        if (!noData && schraffurActive)
         {
             foreach (Transform child in schraffur.transform)
             {
