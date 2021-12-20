@@ -9,6 +9,7 @@ public class MouseManager : MonoBehaviour
     private Color ClickedColor;
 
     public bool countryAdded = false;
+    public bool countryHovered = false;
     
     /*public Camera mainCamera;
     private RaycastHit2D hit;
@@ -28,6 +29,7 @@ public class MouseManager : MonoBehaviour
         {
             savedColor = gameObject.GetComponent<SpriteRenderer>().color;
             gameObject.GetComponent<SpriteRenderer>().color = HoverColor;
+            countryHovered = true;
         }
     }
 
@@ -36,6 +38,7 @@ public class MouseManager : MonoBehaviour
         if (!countryAdded)
         {
             gameObject.GetComponent<SpriteRenderer>().color = savedColor;
+            countryHovered = false;
         }
     }
 

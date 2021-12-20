@@ -1,0 +1,17 @@
+Graphs:
+	Population main Graph
+	Individual Country Graphs -> all 3 data points as graphs if possible
+
+UI Elements:
+	Hover over Stages -> show 4 Stages modell over the map, somewhat transparent
+	Finish dropdown menu for both countries
+		- Call AddLeft/RightCountry on choice selected
+		- In those functions add:
+			- save stage color of selected country
+			- color country red on map
+		- force set dropdown selection when country gets selected by clicking on map
+	(((search bar in the dropdown menu)))
+	
+Visuals:
+	Add mini country image in the individual country frame to show the selected country and its stage
+		- scale big ones down but leave small ones small? 		

@@ -31,23 +31,31 @@ public class YearManager : MonoBehaviour
     void Start()
     {
         YearSlider = GetComponent<Slider>();
+        StartCoroutine(UpdateCountries());
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (Transform child in WorldMap.transform)
-        {
-            if (!child.gameObject.GetComponent<CountryManager>().processing)
-            {
-                child.gameObject.GetComponent<CountryManager>().updateYear();
-            }
-        }
+        
     }
 
     public void UpdateYear()
     {
         currentYear = (int)YearSlider.value;
         CurrentYearDisplay.text = currentYear.ToString();
+    }
+
+    IEnumerator UpdateCountries()
+    {
+        yield return new WaitForSecondsRealtime(0.1f);
+        foreach (Transform child in WorldMap.transform)
+        {
+            //if (!child.gameObject.GetComponent<CountryManager>().processing)
+            //{
+                child.gameObject.GetComponent<CountryManager>().updateYear();
+            //}
+        }
+        StartCoroutine(UpdateCountries());
     }
 }
