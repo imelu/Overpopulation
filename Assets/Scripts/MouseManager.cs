@@ -46,8 +46,8 @@ public class MouseManager : MonoBehaviour
     {
         if (countryAdded)
         {
-            CountryCompareManager.Instance.RemoveCountry(gameObject);
-            countryAdded = false;
+            //CountryCompareManager.Instance.RemoveCountry(gameObject);
+            //countryAdded = false;
         }
         else
         {
@@ -62,5 +62,17 @@ public class MouseManager : MonoBehaviour
         {
             gameObject.GetComponent<SpriteRenderer>().color = HoverColor;
         }
+    }
+
+    public void DropDownSelected()
+    {
+        countryAdded = true;
+        savedColor = gameObject.GetComponent<SpriteRenderer>().color;
+        gameObject.GetComponent<SpriteRenderer>().color = ClickedColor;
+    }
+    public void CountryDeselected()
+    {
+        countryAdded = false;
+        gameObject.GetComponent<SpriteRenderer>().color = savedColor;
     }
 }
