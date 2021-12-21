@@ -105,7 +105,7 @@ public class CountryCompareManager : MonoBehaviour
 
     public void RemoveCountry(GameObject _Country)
     {
-        if(GameObject.ReferenceEquals(CountryLeft, _Country))
+        if (GameObject.ReferenceEquals(CountryLeft, _Country))
         {
             CountryLeft.GetComponent<MouseManager>().CountryDeselected();
             CountryLeft = null;

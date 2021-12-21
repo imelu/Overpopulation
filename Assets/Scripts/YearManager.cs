@@ -20,6 +20,9 @@ public class YearManager : MonoBehaviour
     [SerializeField] private GameObject CountryGraphLeft;
     [SerializeField] private GameObject CountryGraphRight;
 
+    [SerializeField] private Slider SliderWorld;
+    [SerializeField] private Slider SliderC1;
+    [SerializeField] private Slider SliderC2;
     #region Singleton
     public static YearManager Instance;
     private void Awake()
@@ -48,6 +51,9 @@ public class YearManager : MonoBehaviour
     {
         currentYear = (int)YearSlider.value;
         CurrentYearDisplay.text = currentYear.ToString();
+        SliderWorld.value = YearSlider.value;
+        SliderC1.value = YearSlider.value;
+        SliderC2.value = YearSlider.value;
     }
 
     IEnumerator UpdateCountries()

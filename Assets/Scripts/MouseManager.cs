@@ -38,8 +38,8 @@ public class MouseManager : MonoBehaviour
         if (!countryAdded)
         {
             gameObject.GetComponent<SpriteRenderer>().color = savedColor;
-            countryHovered = false;
         }
+        countryHovered = false;
     }
 
     public void OnMouseDown()
