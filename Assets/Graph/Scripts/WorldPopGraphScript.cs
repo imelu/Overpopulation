@@ -35,7 +35,7 @@ public class WorldPopGraphScript : MonoBehaviour
     bool once = false;
     int minYear = 1800;
     int maxYear = 2021;
-
+    [SerializeField] private Color popColor;
     private void Start()
     {
         currentYear = YearManager.Instance.currentYear;
@@ -122,7 +122,7 @@ public class WorldPopGraphScript : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(1, 1);
+        rectTransform.sizeDelta = new Vector2(0, 0);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
         return gameObject;
@@ -132,7 +132,7 @@ public class WorldPopGraphScript : MonoBehaviour
     {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = 12000000000f;
-        float xSize = 1f;
+        float xSize = 0.8f;
 
         GameObject lastCircleGameObject = null;
         for (int i = 0; i < valueList.Count; i++)
@@ -153,7 +153,7 @@ public class WorldPopGraphScript : MonoBehaviour
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         graphComponents.Add(gameObject);
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);
+        gameObject.GetComponent<Image>().color = popColor;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);

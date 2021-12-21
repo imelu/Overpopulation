@@ -14,7 +14,7 @@ using CodeMonkey.Utils;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using TMPro;
 
 
 
@@ -43,6 +43,12 @@ public class CountryPopGraphScript : MonoBehaviour
     private float maxpop;
     private float maxfert;
     private float maxmort;
+
+    [SerializeField] private Color birthColor;
+    [SerializeField] private Color deathColor;
+    [SerializeField] private Color popColor;
+    [SerializeField] public TMP_Text popText;
+
     private void Awake()
     {
         graphContainer = transform.Find("graphContainer").GetComponent<RectTransform>();
@@ -77,6 +83,17 @@ public class CountryPopGraphScript : MonoBehaviour
                     CountryDict = DataManager.Instance.FetchCountryDict(CountryLocal.name);
                     //yearData = DataManager.Instance.FetchCountryYearData(CountryLocal.name);
                     getAllData();
+                    string roundedMaxPop;
+                    if (maxpop > 100000)
+                    {
+                        roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000000)).ToString() + " M";
+                    }
+                    else
+                    {
+                        roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000).ToString() + " K");
+                    }
+
+                    popText.text = roundedMaxPop;
                 }
             }
 
@@ -102,6 +119,17 @@ public class CountryPopGraphScript : MonoBehaviour
                     CountryDict = DataManager.Instance.FetchCountryDict(CountryLocal.name);
                     //yearData = DataManager.Instance.FetchCountryYearData(CountryLocal.name);
                     getAllData();
+                    string roundedMaxPop;
+                    if (maxpop > 100000)
+                    {
+                        roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000000)).ToString() + " M";
+                    }
+                    else
+                    {
+                        roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000).ToString() + " K");
+                    }
+
+                    popText.text = roundedMaxPop;
                 }
             }
         }
@@ -123,15 +151,17 @@ public class CountryPopGraphScript : MonoBehaviour
                 //popdata
                 List<float> CountryYearDataPop = new List<float>(CountryDataPop);
                 CountryYearDataPop.RemoveRange(listIndex, maxYear - currentYear + 1);
-                ShowGraph(CountryYearDataPop,maxpop);
+                
+                
+                ShowGraph(CountryYearDataPop,maxpop,0);
                 //fertdata
                 List<float> CountryYearDataFert = new List<float>(CountryDataFert);
                 CountryYearDataFert.RemoveRange(listIndex, maxYear - currentYear + 1);
-                ShowGraph(CountryYearDataFert,maxfert);
+                ShowGraph(CountryYearDataFert,maxfert,1);
                 //mortdata
                 List<float> CountryYearDataMort = new List<float>(CountryDataMort);
                 CountryYearDataMort.RemoveRange(listIndex, maxYear - currentYear + 1);
-                ShowGraph(CountryYearDataMort,maxmort);
+                ShowGraph(CountryYearDataMort,maxmort,2);
 
 
             }
@@ -148,9 +178,9 @@ public class CountryPopGraphScript : MonoBehaviour
                 {
                     Destroy(graphComponents[i]);
                 }
-                ShowGraph(CountryDataPop, maxpop);
-                ShowGraph(CountryDataFert, maxfert);
-                ShowGraph(CountryDataMort, maxmort);
+                ShowGraph(CountryDataPop, maxpop,0);
+                ShowGraph(CountryDataFert, maxfert,1);
+                ShowGraph(CountryDataMort, maxmort,2);
 
             }
 
@@ -194,13 +224,13 @@ public class CountryPopGraphScript : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(1, 1);
+        rectTransform.sizeDelta = new Vector2(0, 0);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
         return gameObject;
     }
 
-    private void ShowGraph(List<float> valueList,float maxY)
+    private void ShowGraph(List<float> valueList,float maxY,int graphType)
     {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = maxY;
@@ -226,7 +256,7 @@ public class CountryPopGraphScript : MonoBehaviour
                 GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
                 if (lastCircleGameObject != null)
                 {
-                    CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition);
+                    CreateDotConnection(lastCircleGameObject.GetComponent<RectTransform>().anchoredPosition, circleGameObject.GetComponent<RectTransform>().anchoredPosition,graphType);
                 }
                 lastCircleGameObject = circleGameObject;
             }
@@ -237,12 +267,26 @@ public class CountryPopGraphScript : MonoBehaviour
 
 
 
-    private void CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)
+    private void CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB,int graphType)
     {
         GameObject gameObject = new GameObject("dotConnection", typeof(Image));
         graphComponents.Add(gameObject);
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, .5f);
+        Color GraphColor=new Color(1f, 1f, 1f, 1f); ;
+        if(graphType==0)
+        {
+            GraphColor = popColor;
+        }
+        else if(graphType == 1)
+        {
+            GraphColor = birthColor;
+        }
+        else if (graphType == 2)
+        {
+            GraphColor = deathColor;
+
+        }
+        gameObject.GetComponent<Image>().color = GraphColor;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         Vector2 dir = (dotPositionB - dotPositionA).normalized;
         float distance = Vector2.Distance(dotPositionA, dotPositionB);
