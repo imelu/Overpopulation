@@ -41,11 +41,17 @@ public class DropDownManager : MonoBehaviour
         {
             if (LeftDropdown)
             {
-                CountryCompareManager.Instance.AddLeftCountry(dropdown.captionText.text);
+                if (!CountryCompareManager.Instance.AddLeftCountry(dropdown.captionText.text))
+                {
+                    RemoveOption();
+                }
             }
             else
             {
-                CountryCompareManager.Instance.AddRightCountry(dropdown.captionText.text);
+                if (!CountryCompareManager.Instance.AddRightCountry(dropdown.captionText.text))
+                {
+                    RemoveOption();
+                }
             }
         }
         else
