@@ -122,24 +122,70 @@ public class CountryCompareManager : MonoBehaviour
         }
     }
 
-    public void AddLeftCountry(string _Country)
+    public bool AddLeftCountry(string _Country)
     {
+        GameObject temp;
         if(CountryLeft != null)
         {
             CountryLeft.GetComponent<MouseManager>().CountryDeselected();
         }
-        CountryLeft = Countries.transform.Find(_Country).gameObject;
-        CountryLeft.GetComponent<MouseManager>().DropDownSelected();
+        temp = Countries.transform.Find(_Country).gameObject;
+        if(CountryRight != null)
+        {
+            if (temp != CountryRight)
+            {
+                CountryLeft = temp;
+                CountryLeft.GetComponent<MouseManager>().DropDownSelected();
+                return true;
+            }
+            else
+            {
+                if (CountryLeft != null)
+                {
+                    RemoveCountry(CountryLeft);
+                }
+                return false;
+            }
+        }
+        else
+        {
+            CountryLeft = temp;
+            CountryLeft.GetComponent<MouseManager>().DropDownSelected();
+            return true;
+        }
     }
 
-    public void AddRightCountry(string _Country)
+    public bool AddRightCountry(string _Country)
     {
+        GameObject temp;
         if (CountryRight != null)
         {
             CountryRight.GetComponent<MouseManager>().CountryDeselected();
         }
-        CountryRight = Countries.transform.Find(_Country).gameObject;
-        CountryRight.GetComponent<MouseManager>().DropDownSelected();
+        temp = Countries.transform.Find(_Country).gameObject;
+        if(CountryLeft != null)
+        {
+            if (temp != CountryLeft)
+            {
+                CountryRight = temp;
+                CountryRight.GetComponent<MouseManager>().DropDownSelected();
+                return true;
+            }
+            else
+            {
+                if (CountryRight != null)
+                {
+                    RemoveCountry(CountryRight);
+                }
+                return false;
+            }
+        }
+        else
+        {
+            CountryRight = temp;
+            CountryRight.GetComponent<MouseManager>().DropDownSelected();
+            return true;
+        }
     }
 
     public void SetActiveSide(bool _leftButton)
