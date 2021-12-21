@@ -5,8 +5,8 @@ using TMPro;
 
 public class CountryCompareManager : MonoBehaviour
 {
-    private GameObject CountryLeft;
-    private GameObject CountryRight;
+    public GameObject CountryLeft;
+    public GameObject CountryRight;
 
     [SerializeField] private TMP_Text CountryLeftText;
     [SerializeField] private TMP_Text CountryRightText;
