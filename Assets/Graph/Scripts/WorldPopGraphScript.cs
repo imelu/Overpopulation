@@ -36,6 +36,10 @@ public class WorldPopGraphScript : MonoBehaviour
     int minYear = 1800;
     int maxYear = 2021;
     [SerializeField] private Color popColor;
+
+    [SerializeField] public Image cheatSheet;
+    private float lastSavedYear;
+
     private void Start()
     {
         currentYear = YearManager.Instance.currentYear;
@@ -55,11 +59,21 @@ public class WorldPopGraphScript : MonoBehaviour
         }
         else
         {
-            if (once == false)
+            if (lastSavedYear != currentYear)
+            {
+                lastSavedYear = currentYear;
+                cheatSheet.fillAmount = 1f / 221f * (maxYear - lastSavedYear);
+            }
+                if (once == false)
             {
                 once = true;
                 getAllData();
+                ShowGraph(WorldData);
+                cheatSheet.type = Image.Type.Filled;
+                cheatSheet.fillAmount = 1f / 221f * (maxYear - currentYear);
+                Debug.Log(cheatSheet.fillAmount);
             }
+            /*
             else
             {
                 if (currentYear >= 1800 && currentYear <= 2021)
@@ -90,9 +104,10 @@ public class WorldPopGraphScript : MonoBehaviour
                     ShowGraph(WorldData);
                 }
             }
-
+            */
         }
         currmaxyear = currentYear;
+            
     }
 
     private void Awake()

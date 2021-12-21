@@ -49,6 +49,8 @@ public class CountryPopGraphScript : MonoBehaviour
     [SerializeField] private Color deathColor;
     [SerializeField] private Color popColor;
     [SerializeField] public TMP_Text popText;
+    [SerializeField] public Image cheatSheet;
+
 
     private void Awake()
     {
@@ -72,7 +74,6 @@ public class CountryPopGraphScript : MonoBehaviour
                 {
                     for (int i = 0; i < graphComponents.Count; i++)
                     {
-                        Debug.Log("wat");
                         Destroy(graphComponents[i]);
                     }
                     CountryDataPop.Clear();
@@ -86,6 +87,17 @@ public class CountryPopGraphScript : MonoBehaviour
                     //yearData = DataManager.Instance.FetchCountryYearData(CountryLocal.name);
                     getAllData();
                     string roundedMaxPop;
+
+                    //alternate with image
+                    for (int i = 0; i < graphComponents.Count; i++)
+                    {
+                        Destroy(graphComponents[i]);
+                    }
+                    ShowGraph(CountryDataPop, maxpop, 0);
+                    ShowGraph(CountryDataFert, maxfert, 1);
+                    ShowGraph(CountryDataMort, maxmort, 2);
+
+
                     if (maxpop > 100000)
                     {
                         roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000000)).ToString() + " M";
@@ -122,6 +134,17 @@ public class CountryPopGraphScript : MonoBehaviour
                     //yearData = DataManager.Instance.FetchCountryYearData(CountryLocal.name);
                     getAllData();
                     string roundedMaxPop;
+
+                    //alternate with image
+                    for (int i = 0; i < graphComponents.Count; i++)
+                    {
+                        Destroy(graphComponents[i]);
+                    }
+                    ShowGraph(CountryDataPop, maxpop, 0);
+                    ShowGraph(CountryDataFert, maxfert, 1);
+                    ShowGraph(CountryDataMort, maxmort, 2);
+
+
                     if (maxpop > 100000)
                     {
                         roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000000)).ToString() + " M";
@@ -138,13 +161,21 @@ public class CountryPopGraphScript : MonoBehaviour
 
 
     }
+    
     public void updateYear(int currentYear)
     {
         if (lastSavedYear != currentYear)
         {
             lastSavedYear = currentYear;
+            cheatSheet.fillAmount = 1f / 221f * (maxYear- lastSavedYear);
             if (CountryLocal != null)
             {
+                
+                //alternate with imageslider
+
+
+                //alternate without imageslider
+                /*
                 if (currentYear >= 1800 && currentYear <= 2021)
                 {
                     for (int i = 0; i < graphComponents.Count; i++)
@@ -186,18 +217,18 @@ public class CountryPopGraphScript : MonoBehaviour
                     ShowGraph(CountryDataFert, maxfert, 1);
                     ShowGraph(CountryDataMort, maxmort, 2);
 
-                }
+                }*/
+                
 
             }
-            currmaxyear = currentYear;
+                currmaxyear = currentYear;
         }
         
 
     }
-
+    
     void getAllData()
     {
-
 
         for (int i = minYear; i <= maxYear; i++)
         {
