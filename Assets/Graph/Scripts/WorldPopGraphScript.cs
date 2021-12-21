@@ -62,7 +62,7 @@ public class WorldPopGraphScript : MonoBehaviour
             }
             else
             {
-                if (currentYear >= 1800&&currentYear<=2021)
+                if (currentYear >= 1800 && currentYear <= 2021)
                 {
                     for (int i = 0; i < graphComponents.Count; i++)
                     {
@@ -71,24 +71,27 @@ public class WorldPopGraphScript : MonoBehaviour
 
                     int listIndex = currentYear - minYear;
                     List<float> WorldYearData = new List<float>(WorldData);
-                    WorldYearData.RemoveRange(listIndex, maxYear-currentYear+1);
+                    WorldYearData.RemoveRange(listIndex, maxYear - currentYear + 1);
                     ShowGraph(WorldYearData);
                 }
-                else if(currentYear < 1800)
+                else if (currentYear < 1800)
                 {
                     for (int i = 0; i < graphComponents.Count; i++)
                     {
                         Destroy(graphComponents[i]);
                     }
                 }
-                else if(currentYear>2021)
+                else if (currentYear > 2021)
                 {
+                    for (int i = 0; i < graphComponents.Count; i++)
+                    {
+                        Destroy(graphComponents[i]);
+                    }
                     ShowGraph(WorldData);
                 }
             }
 
         }
-        Debug.Log(currentCountryData.population);
         currmaxyear = currentYear;
     }
 
@@ -101,8 +104,6 @@ public class WorldPopGraphScript : MonoBehaviour
 
     void getAllData()
     {
-
-
         for (int i = minYear; i <= maxYear; i++)
         {
             CountryData temp;
@@ -110,13 +111,7 @@ public class WorldPopGraphScript : MonoBehaviour
             {
                 WorldData.Add(temp.population);
             }
-            if (i == 2021)
-            {
-                ShowGraph(WorldData);
-
-            }
         }
-
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -136,7 +131,7 @@ public class WorldPopGraphScript : MonoBehaviour
     private void ShowGraph(List<float> valueList)
     {
         float graphHeight = graphContainer.sizeDelta.y;
-        float yMaximum = 8000000000f;
+        float yMaximum = 12000000000f;
         float xSize = 1f;
 
         GameObject lastCircleGameObject = null;

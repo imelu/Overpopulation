@@ -17,6 +17,8 @@ public class YearManager : MonoBehaviour
     [SerializeField] private GameObject WorldMap;
     [SerializeField] private GameObject WorldCountry;
     [SerializeField] private GameObject WorldGraph;
+    [SerializeField] private GameObject CountryGraphLeft;
+    [SerializeField] private GameObject CountryGraphRight;
 
     #region Singleton
     public static YearManager Instance;
@@ -59,6 +61,9 @@ public class YearManager : MonoBehaviour
             //}
         }
         WorldGraph.GetComponent<WorldPopGraphScript>().updateYear(currentYear);
+        CountryGraphLeft.GetComponent<CountryPopGraphScript>().updateYear(currentYear);
+        CountryGraphRight.GetComponent<CountryPopGraphScript>().updateYear(currentYear);
+
         StartCoroutine(UpdateCountries());
     }
 }
