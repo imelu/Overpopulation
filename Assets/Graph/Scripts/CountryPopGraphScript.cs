@@ -44,6 +44,7 @@ public class CountryPopGraphScript : MonoBehaviour
     private float maxfert;
     private float maxmort;
 
+    private float lastSavedYear;
     [SerializeField] private Color birthColor;
     [SerializeField] private Color deathColor;
     [SerializeField] private Color popColor;
@@ -71,6 +72,7 @@ public class CountryPopGraphScript : MonoBehaviour
                 {
                     for (int i = 0; i < graphComponents.Count; i++)
                     {
+                        Debug.Log("wat");
                         Destroy(graphComponents[i]);
                     }
                     CountryDataPop.Clear();
@@ -138,54 +140,58 @@ public class CountryPopGraphScript : MonoBehaviour
     }
     public void updateYear(int currentYear)
     {
-        if (CountryLocal != null)
+        if (lastSavedYear != currentYear)
         {
-            if (currentYear >= 1800 && currentYear <= 2021)
+            lastSavedYear = currentYear;
+            if (CountryLocal != null)
             {
-                for (int i = 0; i < graphComponents.Count; i++)
+                if (currentYear >= 1800 && currentYear <= 2021)
                 {
-                    Destroy(graphComponents[i]);
+                    for (int i = 0; i < graphComponents.Count; i++)
+                    {
+                        Destroy(graphComponents[i]);
+                    }
+
+                    int listIndex = currentYear - minYear;
+                    //popdata
+                    List<float> CountryYearDataPop = new List<float>(CountryDataPop);
+                    CountryYearDataPop.RemoveRange(listIndex, maxYear - currentYear + 1);
+
+                    ShowGraph(CountryYearDataPop, maxpop, 0);
+                    //fertdata
+                    List<float> CountryYearDataFert = new List<float>(CountryDataFert);
+                    CountryYearDataFert.RemoveRange(listIndex, maxYear - currentYear + 1);
+                    ShowGraph(CountryYearDataFert, maxfert, 1);
+                    //mortdata
+                    List<float> CountryYearDataMort = new List<float>(CountryDataMort);
+                    CountryYearDataMort.RemoveRange(listIndex, maxYear - currentYear + 1);
+                    ShowGraph(CountryYearDataMort, maxmort, 2);
+
+
+                }
+                else if (currentYear < 1800)
+                {
+                    for (int i = 0; i < graphComponents.Count; i++)
+                    {
+                        Destroy(graphComponents[i]);
+                    }
+                }
+                else if (currentYear > 2021)
+                {
+                    for (int i = 0; i < graphComponents.Count; i++)
+                    {
+                        Destroy(graphComponents[i]);
+                    }
+                    ShowGraph(CountryDataPop, maxpop, 0);
+                    ShowGraph(CountryDataFert, maxfert, 1);
+                    ShowGraph(CountryDataMort, maxmort, 2);
+
                 }
 
-                int listIndex = currentYear - minYear;
-                //popdata
-                List<float> CountryYearDataPop = new List<float>(CountryDataPop);
-                CountryYearDataPop.RemoveRange(listIndex, maxYear - currentYear + 1);
-                
-                
-                ShowGraph(CountryYearDataPop,maxpop,0);
-                //fertdata
-                List<float> CountryYearDataFert = new List<float>(CountryDataFert);
-                CountryYearDataFert.RemoveRange(listIndex, maxYear - currentYear + 1);
-                ShowGraph(CountryYearDataFert,maxfert,1);
-                //mortdata
-                List<float> CountryYearDataMort = new List<float>(CountryDataMort);
-                CountryYearDataMort.RemoveRange(listIndex, maxYear - currentYear + 1);
-                ShowGraph(CountryYearDataMort,maxmort,2);
-
-
             }
-            else if (currentYear < 1800)
-            {
-                for (int i = 0; i < graphComponents.Count; i++)
-                {
-                    Destroy(graphComponents[i]);
-                }
-            }
-            else if (currentYear > 2021)
-            {
-                for (int i = 0; i < graphComponents.Count; i++)
-                {
-                    Destroy(graphComponents[i]);
-                }
-                ShowGraph(CountryDataPop, maxpop,0);
-                ShowGraph(CountryDataFert, maxfert,1);
-                ShowGraph(CountryDataMort, maxmort,2);
-
-            }
-
+            currmaxyear = currentYear;
         }
-        currmaxyear = currentYear;
+        
 
     }
 
@@ -221,7 +227,6 @@ public class CountryPopGraphScript : MonoBehaviour
         GameObject gameObject = new GameObject("circle", typeof(Image));
         graphComponents.Add(gameObject);
         gameObject.transform.SetParent(graphContainer, false);
-        gameObject.GetComponent<Image>().sprite = circleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
         rectTransform.sizeDelta = new Vector2(0, 0);
@@ -248,7 +253,6 @@ public class CountryPopGraphScript : MonoBehaviour
             }
             else
             {
-
                 float xPosition = gapsize * xSize + lastx;
                 lastx = xPosition;
                 float yPosition = (valueList[i] / yMaximum) * graphHeight;
@@ -284,7 +288,6 @@ public class CountryPopGraphScript : MonoBehaviour
         else if (graphType == 2)
         {
             GraphColor = deathColor;
-
         }
         gameObject.GetComponent<Image>().color = GraphColor;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
