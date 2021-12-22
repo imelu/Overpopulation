@@ -49,10 +49,35 @@ public class WorldPopGraphScript : MonoBehaviour
 
 
     }
-
+    private void Update()
+    {
+        currentYear = YearManager.Instance.currentYear;
+        if (CountryDict == null)
+        {
+            CountryDict = DataManager.Instance.FetchCountryDict("World");
+        }
+        else
+        {
+            if (lastSavedYear != currentYear)
+            {
+                lastSavedYear = currentYear;
+                cheatSheet.fillAmount = 1f / 221f * (maxYear - lastSavedYear);
+            }
+            if (once == false)
+            {
+                once = true;
+                getAllData();
+                ShowGraph(WorldData);
+                cheatSheet.type = Image.Type.Filled;
+                cheatSheet.fillAmount = 1f / 221f * (maxYear - currentYear);
+                Debug.Log(cheatSheet.fillAmount);
+            }
+            currmaxyear = currentYear;
+        }
+    }
     public void updateYear(int currentYear)
     {
-
+        /*
         if (CountryDict == null)
         {
             CountryDict = DataManager.Instance.FetchCountryDict("World");
@@ -104,10 +129,10 @@ public class WorldPopGraphScript : MonoBehaviour
                     ShowGraph(WorldData);
                 }
             }
-            */
+            
         }
         currmaxyear = currentYear;
-            
+            */
     }
 
     private void Awake()
@@ -147,7 +172,7 @@ public class WorldPopGraphScript : MonoBehaviour
     {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = 12000000000f;
-        float xSize = 0.97f;
+        float xSize = 0.9f;
 
         GameObject lastCircleGameObject = null;
         for (int i = 0; i < valueList.Count; i++)

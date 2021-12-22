@@ -107,7 +107,7 @@ public class CountryPopGraphScript : MonoBehaviour
                     ShowGraph(CountryDataMort, maxmort, 2);
 
 
-                    if (maxpop > 100000)
+                    if (maxpop > 900000)
                     {
                         roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000000)).ToString() + " M";
                     }
@@ -167,7 +167,7 @@ public class CountryPopGraphScript : MonoBehaviour
                     ShowGraph(CountryDataMort, maxmort, 2);
 
 
-                    if (maxpop > 100000)
+                    if (maxpop > 900000)
                     {
                         roundedMaxPop = (Mathf.RoundToInt(maxpop / 1000000)).ToString() + " M";
                     }
@@ -304,7 +304,7 @@ public class CountryPopGraphScript : MonoBehaviour
     {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = maxY;
-        float xSize = 0.97f;
+        float xSize = 0.91f;
 
         GameObject lastCircleGameObject = null;
         float gapsize = 1;
