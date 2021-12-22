@@ -147,7 +147,7 @@ public class WorldPopGraphScript : MonoBehaviour
     {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = 12000000000f;
-        float xSize = 0.8f;
+        float xSize = 0.97f;
 
         GameObject lastCircleGameObject = null;
         for (int i = 0; i < valueList.Count; i++)

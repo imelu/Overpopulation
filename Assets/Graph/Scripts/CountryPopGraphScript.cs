@@ -64,8 +64,17 @@ public class CountryPopGraphScript : MonoBehaviour
     }
     private void Update()
     {
+        currentYear = YearManager.Instance.currentYear;
+        if (lastSavedYear != currentYear)
+        {
+            lastSavedYear = currentYear;
+            cheatSheet.fillAmount = 1f / 221f * (maxYear - lastSavedYear);
+            currmaxyear = currentYear;
+        }
 
-        if (isleft == true)
+
+
+                if (isleft == true)
         {
             CountryGlobal = CountryCompareManager.Instance.CountryLeft;
             if (CountryGlobal != null)
@@ -109,6 +118,19 @@ public class CountryPopGraphScript : MonoBehaviour
 
                     popText.text = roundedMaxPop;
                 }
+            }
+
+            else
+            {
+                CountryDataPop.Clear();
+                CountryDataFert.Clear();
+                CountryDataMort.Clear();
+                for (int i = 0; i < graphComponents.Count; i++)
+                {
+                    Destroy(graphComponents[i]);
+                }
+                CountryLocal = null;
+
             }
 
         }
@@ -157,6 +179,17 @@ public class CountryPopGraphScript : MonoBehaviour
                     popText.text = roundedMaxPop;
                 }
             }
+            else
+            {
+                CountryDataPop.Clear();
+                CountryDataFert.Clear();
+                CountryDataMort.Clear();
+                for (int i = 0; i < graphComponents.Count; i++)
+                {
+                    Destroy(graphComponents[i]);
+                }
+
+            }
         }
 
 
@@ -164,6 +197,7 @@ public class CountryPopGraphScript : MonoBehaviour
     
     public void updateYear(int currentYear)
     {
+        /* 
         if (lastSavedYear != currentYear)
         {
             lastSavedYear = currentYear;
@@ -217,13 +251,13 @@ public class CountryPopGraphScript : MonoBehaviour
                     ShowGraph(CountryDataFert, maxfert, 1);
                     ShowGraph(CountryDataMort, maxmort, 2);
 
-                }*/
+                }
                 
 
             }
                 currmaxyear = currentYear;
         }
-        
+        */
 
     }
     
@@ -270,7 +304,7 @@ public class CountryPopGraphScript : MonoBehaviour
     {
         float graphHeight = graphContainer.sizeDelta.y;
         float yMaximum = maxY;
-        float xSize = 0.8f;
+        float xSize = 0.97f;
 
         GameObject lastCircleGameObject = null;
         float gapsize = 1;
