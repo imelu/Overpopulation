@@ -12,7 +12,7 @@ public class YearManager : MonoBehaviour
     private Slider YearSlider;
     [SerializeField] private TMP_Text CurrentYearDisplay;
 
-    public int currentYear = 1750;
+    public int currentYear = 1800;
 
     [SerializeField] private GameObject WorldMap;
     [SerializeField] private GameObject WorldCountry;
